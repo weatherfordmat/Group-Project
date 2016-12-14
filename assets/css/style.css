@@ -33,8 +33,15 @@ th {
 }
 
 .navbar {
-    background-color: #4C4C4C;
-    border-top: 3px solid orange; 
+    background-color: #004080;
+    
+}
+.navbar-top {
+	border-bottom: 3px solid orange;
+}
+.subButton {
+	color: white;
+	font-size: 12px;
 }
 .autoRoute, .addCustomer {
     background-color: orange;
@@ -52,13 +59,12 @@ th {
 
 }
 .autoRoute:hover, .addCustomer:hover {
-	background-color: #4C4C4C;
-	color: white;
+	background-color: #FFFFFF;
+	color: black;
 }
 .toolButtons2 {
 	float: right;
 }
-
 
 /* body area */
 .panel {
@@ -92,6 +98,7 @@ th {
 /* footer */
 .footer {
 	height: 10px;
+	border-top: 3px solid #FF8000;
 }
 /* login */
 #contacts p, 
@@ -120,10 +127,17 @@ th {
 	margin: 2%;
 }
 
+.auth {
+	margin: 2%;
+	margin-top: 15%;
+}
 /* responsive design */
 @media (max-width: 700px) {
 	.panel {
 		left: 0;
 
+	}
+	.auth {
+		margin-top: 2%;
 	}
 }

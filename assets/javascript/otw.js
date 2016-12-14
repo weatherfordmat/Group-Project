@@ -11,41 +11,43 @@ var rootRef = database.ref();
 $(document).ready(function() {
     //login information shows if the user logs in or registers
     $('.loginInputs').hide();
-    $('#register').on('click', function() {
-        $('.loginInputs').show();
-        $('.registerUser').on('click', function() {
-            email = $('#email').val().trim();
-            password = $('#password').val().trim();
+    $('.panel').css('filter', 'blur(10px)');  
+       
+        function createUser(email, password) { 
             if (email !== '' && password !== '') {
                 firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
                     var errorCode = error.code;
                     var errorMessage = error.message;
                 });
-                $('.auth').html("<br>" + "Logged In As: " + email);
-                $('.auth').css('color', 'white').css('font-size', '1.5em')
+                $('.panel').css('filter', 'blur(0px)');
+                $('.auth').html(email);
+                $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');
             } else {
                 $('input').css('border', '2px solid red');
             }
-        });
-    });
+        
+    };
     //create a user when submit is pressed:
-
-    //login a user that already exists:
+    //login a user that already exists: N. B. Passwords must be longer than six characters!
     $('#login').on('click', function() {
         $('.loginInputs').show();
-        $('.registerUser').on('click', function() {
+        $('.login').on('click', function() {
             email = $('#email').val().trim();
             password = $('#password').val().trim();
             if (email !== '' && password !== '') {
                 firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
                     var errorCode = error.code;
-                    var errorMessage = error.message;  
-                     $('input').css('border', '2px solid red');                 
+                    var errorMessage = error.message;
+                    console.log("Looks Like We'll Create A User for You!");
+                    createUser(email, password);
                 });
+             $('.panel').css('filter', 'blur(0px)');
+            $('.auth').html(email);
+            $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');
             }
         });
     });
-    
+
     //show map view & hide list view;
     $('#toggleMap').on('click', function() {
         $('.panel').animate({

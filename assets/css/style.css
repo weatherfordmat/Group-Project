@@ -34,9 +34,7 @@ th {
 
 .navbar {
     background-color: #4C4C4C;
-    border-top: 3px solid orange;
-
-   
+    border-top: 3px solid orange; 
 }
 .autoRoute, .addCustomer {
     background-color: orange;
@@ -56,6 +54,9 @@ th {
 .autoRoute:hover, .addCustomer:hover {
 	background-color: #4C4C4C;
 	color: white;
+}
+.toolButtons2 {
+	float: right;
 }
 
 
@@ -79,6 +80,10 @@ th {
 .toolButtons {
 	margin: 1%;
 	padding: 10px;
+}
+.toolButtons2 {
+	margin-top: 20px;
+	margin-left: 10px;
 }
 .spacer {
 	margin-left: 2px;

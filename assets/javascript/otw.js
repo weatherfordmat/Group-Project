@@ -13,14 +13,14 @@ $(document).ready(function() {
         $('.panel').animate({
             left: "+=100",
             height: "toggle"
-        }, 1000);
+        }, 500);
     });
     //show list view and hide map view;
     $('#toggleList').on('click', function() {
         $('.panel').animate({
             left: "+=100",
             height: "toggle"
-        }, 1000);
+        }, 500);
     });
 });
 

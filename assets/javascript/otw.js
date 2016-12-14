@@ -6,8 +6,46 @@ var config = {
     messagingSenderId: "422948488078"
 };
 firebase.initializeApp(config);
-
+var database = firebase.database();
+var rootRef = database.ref();
 $(document).ready(function() {
+    //login information shows if the user logs in or registers
+    $('.loginInputs').hide();
+    $('#register').on('click', function() {
+        $('.loginInputs').show();
+        $('.registerUser').on('click', function() {
+            email = $('#email').val().trim();
+            password = $('#password').val().trim();
+            if (email !== '' && password !== '') {
+                firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                });
+                $('.auth').html("<br>" + "Logged In As: " + email);
+                $('.auth').css('color', 'white').css('font-size', '1.5em')
+            } else {
+                $('input').css('border', '2px solid red');
+            }
+        });
+    });
+    //create a user when submit is pressed:
+
+    //login a user that already exists:
+    $('#login').on('click', function() {
+        $('.loginInputs').show();
+        $('.registerUser').on('click', function() {
+            email = $('#email').val().trim();
+            password = $('#password').val().trim();
+            if (email !== '' && password !== '') {
+                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;  
+                     $('input').css('border', '2px solid red');                 
+                });
+            }
+        });
+    });
+    
     //show map view & hide list view;
     $('#toggleMap').on('click', function() {
         $('.panel').animate({
@@ -23,8 +61,7 @@ $(document).ready(function() {
         }, 500);
     });
 });
-
-/* Warning, each text is 0.0065 cents. Use with caution.
+/* Warning, each text is 0.0065 cents. Add +1 for US numbers. Use with caution.
 to use => sendText('12017016880', '12817430153', 'It works!');
 */
 function sendText(from, to, text) {

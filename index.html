@@ -9,13 +9,12 @@
             </script>
             <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js">
             </script>
-            <script src="assets/javascript/otw.js"> </script>
+            <script src="assets/javascript/otw.js">
+            </script>
             <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
                 <link href="assets/css/reset.css" rel="stylesheet" type="text/css">
                     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
                         <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
-
-                           
                         </link>
                     </link>
                 </link>
@@ -23,7 +22,6 @@
         </meta>
     </head>
     <body>
-
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
@@ -34,19 +32,30 @@
                     </h1>
                 </div>
                 <div class="nav navbar-nav navbar-right">
-                <button aria-label="Left Align" class="btn btn-success toolButtons2" type="button">
-                        Login-In
-                    </button>
-                    <button aria-label="Left Align" class="btn btn-success toolButtons2" type="button">
-                       Register
-                    </button>
+                    <div class="auth">
+                        <button class="btn btn-default" id="login">
+                            Login
+                        </button>
+                        <button class="btn btn-default" id="register">
+                            Register
+                        </button>
+                        <div class="loginInputs">
+                            <input id="email" placeholder="username" type="text">
+                                <input id="password" placeholder="password" type="password">
+                                    <button class="btn btn-success registerUser" type="submit">
+                                        Submit
+                                    </button>
+                                </input>
+                            </input>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
         <div class="container">
             <div class="row toolbar">
                 <div class="col-md-12">
-                    <button aria-label="Left Align" class="btn btn-default toolButtons" type="button" id="">
+                    <button aria-label="Left Align" class="btn btn-default toolButtons" id="" type="button">
                         <span aria-hidden="true" class="glyphicon glyphicon glyphicon-th-list">
                         </span>
                         <span class="spacer">
@@ -99,7 +108,6 @@
                                         Notes
                                     </th>
                                 </tr>
-
                             </thead>
                             <tbody>
                             </tbody>

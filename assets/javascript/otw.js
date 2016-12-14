@@ -8,13 +8,21 @@ var config = {
 firebase.initializeApp(config);
 
 $(document).ready(function() {
-	
+    //show map view & hide list view;
+    $('#toggleMap').on('click', function() {
+        $('.panel').animate({
+            left: "+=100",
+            height: "toggle"
+        }, 1000);
+    });
+    //show list view and hide map view;
+    $('#toggleList').on('click', function() {
+        $('.panel').animate({
+            left: "+=100",
+            height: "toggle"
+        }, 1000);
+    });
 });
-
-
-
-
-
 
 /* Warning, each text is 0.0065 cents. Use with caution.
 to use => sendText('12017016880', '12817430153', 'It works!');

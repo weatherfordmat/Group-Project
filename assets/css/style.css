@@ -46,7 +46,13 @@ th {
  	padding: 10px;
     font-weight: 600;
 }
+.credits {
+	text-align: center;
+	color: white;
+	font-size: 12px;
+	opacity: 0.7;
 
+}
 .autoRoute:hover, .addCustomer:hover {
 	background-color: #4C4C4C;
 	color: white;

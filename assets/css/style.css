@@ -4,6 +4,7 @@ body {
     margin: 0 auto;
     font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
     padding: 0;
+    overflow-x: hidden;
 }
 
 h1 {
@@ -17,11 +18,10 @@ p {
     font-weight: bold;
 }
 
-
-
 th {
-    color: #4C4C4C;
+    color: #000000;
     font-style: italic;
+    font-weight: 300;
 }
 
 /* header area */
@@ -34,27 +34,30 @@ th {
 
 .navbar {
     background-color: #4C4C4C;
+    border-top: 3px solid orange;
+
    
 }
-.autoRoute {
+.autoRoute, .addCustomer {
     background-color: orange;
     color: white;
     border: 0;
-    margin-left: 60%;
-    padding: 1%;
+	margin: 1%;
+ 	padding: 10px;
     font-weight: 600;
 }
-.autoRoute:hover {
-	background-color: green;
+
+.autoRoute:hover, .addCustomer:hover {
+	background-color: #4C4C4C;
 	color: white;
 }
 
+
 /* body area */
 .panel {
-    width: 90%;
-    margin-top: 50px;
-    position: fixed;
-    left: 70px;
+    width: 100%;
+	margin-top: 40px;
+
     border: 0;
 }
 /*tool bar area */
@@ -69,7 +72,21 @@ th {
 }
 .toolButtons {
 	margin: 1%;
+	padding: 10px;
 }
 .spacer {
 	margin-left: 2px;
+}
+
+/* footer */
+.footer {
+	height: 10px;
+}
+
+/* responsive design */
+@media (max-width: 700px) {
+	.panel {
+		left: 0;
+
+	}
 }

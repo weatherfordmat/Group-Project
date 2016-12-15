@@ -5,39 +5,27 @@ var config = {
     storageBucket: "ontheway-9edc3.appspot.com",
     messagingSenderId: "422948488078"
 };
+
+//initialize firebase;
 firebase.initializeApp(config);
 var database = firebase.database();
 var rootRef = database.ref();
+
 $(document).ready(function() {
     //login information shows if the user logs in or registers
     $('.loginInputs').hide();
-    $('.panel').css('filter', 'blur(10px)');  
-        function createUser(email, password) { 
-            if (email !== '' && password !== '') {
-                firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                });
-                $('.panel').css('filter', 'blur(0px)');
-                $('.auth').html(email);
-                $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');
-            } else {
-                $('input').css('border', '2px solid red');
-            }
-        
-    };
+
+    $('.panel').css('filter', 'blur(10px)');
     //create a user when submit is pressed;
     //login a user that already exists: N. B. Passwords must be longer than six characters!
-     $('#login').on('click', function() {
+    $('#login').on('click', function() {
         login();
     });
-
-     //registering uses the same mechanisms;
+    //registering uses the same mechanisms;
     $('.subButton').click(function() {
-    	login();
-    })
-
-    //show map view & hide list view;
+            login();
+        })
+        //show map view & hide list view;
     $('#toggleMap').on('click', function() {
         $('.panel').animate({
             left: "+=100",
@@ -51,7 +39,11 @@ $(document).ready(function() {
             height: "toggle"
         }, 500);
     });
+    getModal('#myModal', '.addCustomer','.close');
 });
+
+
+//FUNCTIONS TO CALL WITHIN DOCUMENT.READY
 /* Warning, each text is 0.0065 cents. Add +1 for US numbers. Use with caution.
 to use => sendText('12017016880', '12817430153', 'It works!');
 */
@@ -63,22 +55,52 @@ function sendText(from, to, text) {
     });
 };
 
+//logins you if you already are a user
 function login() {
-	$('.loginInputs').show();
-        $('.login').on('click', function() {
-            email = $('#email').val().trim();
-            password = $('#password').val().trim();
-            if (email !== '' && password !== '') {
-                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                    console.log("Looks Like We'll Create A User for You!");
-                    createUser(email, password);
-                });
-             $('.panel').css('filter', 'blur(0px)');
+    $('.loginInputs').show();
+    $('.login').on('click', function() {
+        email = $('#email').val().trim();
+        password = $('#password').val().trim();
+        if (email !== '' && password !== '') {
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("Looks Like We'll Create A User for You!");
+                createUser(email, password);
+            });
+            $('.panel').css('filter', 'blur(0px)');
             $('.auth').html(email);
             $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');
-            }
-        });
+        }
+    });
 }
+
+//registers you as user if you don't already have login
+function createUser(email, password) {
+    if (email !== '' && password !== '') {
+        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+        });
+        $('.panel').css('filter', 'blur(0px)');
+        $('.auth').html(email);
+        $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');
+    } else {
+        $('input').css('border', '2px solid red');
+    }
+}
+
+//Call to open a specific modal; We need to extend this function so that 
+//if a user clicks outside the modal it disappears
+function getModal(modal, buttonOpen, buttonClose) {
+    var modal = $(modal);
+    $(buttonOpen).click(function() {
+        modal.css('display', 'block');
+    });
+    $(buttonClose).click(function() {
+        modal.css('display', 'none');
+    });
+}
+
+
 

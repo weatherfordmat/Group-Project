@@ -14,37 +14,52 @@ $(document).ready(function() {
         var name = childSnapshot.val().name_db;
         var address = childSnapshot.val().address_db;
         var cell = childSnapshot.val().contactCell_db;
-        var notes = childSnapshot.val().notes_db;
+        var notes = childSnapshot.val().notes_db.length > 10 ? childSnapshot.val().notes_db.substring(0, 10) + "..." : childSnapshot.val().notes_db;
         var options = {
             enableHighAccuracy: true,
-            timeout: 5000,
+            timeout: 8000,
             maximumAge: 0
         };
-
-       
-
+        navigator.geolocation.getCurrentPosition(success, error, options);
+        var dest = address;
+        //if we don't know where we are, then append all data, leave data column empty;
         function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
+            $('.table').append("<tr><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
         };
-        navigator.geolocation.getCurrentPosition(success, error, options);
-        
-        var dest = address;
-         function success(pos) {
+        //if we know where we make a request to our node server;
+        function success(pos) {
             var origin = pos.coords;
-            console.log('Your current position is:');
-            console.log('Latitude : ' + origin.latitude);
-            console.log('Longitude: ' + origin.longitude);
-            console.log('More or less ' + origin.accuracy + ' meters.');
-        
-        var geoURL = "https://delivernow.herokuapp.com/api/matrix/" + origin.latitude +"," +origin.longitude + "/" + dest;
-        $.get({
-            url: geoURL
-        }).done(function(response) {
-            $('.table').append("<tr><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-warning'>" + response.history.rows[0].elements[0].duration.text + "</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
+            var geoURL = "https://delivernow.herokuapp.com/api/matrix/" + origin.latitude + "," + origin.longitude + "/" + dest;
+            $.get({
+                url: geoURL
+            }).done(function(response) {
+                $('.table').append("<tr><td><span style='color: orange' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary dur'>" + response.history.rows[0].elements[0].duration.text + "</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
+            });
+        }
+        //sorts by time;
+        var $table = $('.table');
+        var rows = $table.find('tr').get();
+        rows.sort(function(a, b) {
+            var keyA = $(a).attr('.dur');
+            var keyB = $(b).attr('.status');
+            if (keyA > keyB) return 1;
+            if (keyA < keyB) return -1;
+            return 0;
         });
-    }
+        $.each(rows, function(index, row) {
+            $table.children('tbody').append(row);
+        });
     });
-    //login information shows if the user logs in or registers
+    //change the star to be filled or not
+    $('.table').on('click', '.glyphicon', function() {
+            if ($(this).hasClass('glyphicon-star-empty')) {
+                $(this).removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+            } else if ($(this).hasClass('glyphicon-star')) {
+                $(this).removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+            }
+        })
+        //login information shows if the user logs in or registers
     $('.loginInputs').hide();
     $('.panel').css('filter', 'blur(10px)');
     //create a user when submit is pressed;

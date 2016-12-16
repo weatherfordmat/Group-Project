@@ -40,7 +40,7 @@ $(document).ready(function() {
         $.get({
             url: geoURL
         }).done(function(response) {
-            $('.table').append("<tr><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><p>" + response.history.rows[0].elements[0].duration.text + "mins.</p></td><td class='status'>open</td><td>" + notes + "</td></tr>")
+            $('.table').append("<tr><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-warning'>" + response.history.rows[0].elements[0].duration.text + "</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
         });
     }
     });

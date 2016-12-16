@@ -11,17 +11,20 @@ var config = {
 
 
  $(document).ready(function(e) {
-     $('.submit').click(function() {
-         var name = $('.custName').val().trim();
-         var contact = $('.contact').val().trim();
-         var contactCell = $('.contactCell').val().trim();
-         var address= $('.custAddress').val().trim();
+      $('.submit').click(function() {
+
+         var name = $('.custName').val();
+         var notes = $('.notes').val();
+         var contactCell = $('.contactCell').val();
+         var address = $('.custAddress').val();
+         console.log(name, notes, contactCell, address);
            database.ref().push({
-         	name_db: name,
-            contact_db: contact,
+            name_db: name,
+            notes_db: notes,
             contactCell_db: contactCell,
-         	address_db: address,
-         	});
+            address_db: address,
+            });
          return false;
-  	});
+    });
  });
+

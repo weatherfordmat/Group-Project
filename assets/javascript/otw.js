@@ -15,6 +15,7 @@ $(document).ready(function() {
     //login information shows if the user logs in or registers
     $('.loginInputs').hide();
 
+   
     $('.panel').css('filter', 'blur(10px)');
     //create a user when submit is pressed;
     //login a user that already exists: N. B. Passwords must be longer than six characters!

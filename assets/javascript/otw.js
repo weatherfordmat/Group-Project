@@ -12,6 +12,22 @@ var database = firebase.database();
 var rootRef = database.ref();
 
 $(document).ready(function() {
+    
+
+    database.ref().on("child_added", function(childSnapshot) {
+        var name = childSnapshot.val().name_db;
+        var address = childSnapshot.val().address_db;
+        var cell = childSnapshot.val().contactCell_db;
+        var notes = childSnapshot.val().notes_db;
+        var numero = Math.random()*10;
+        var routeTo = $("<p>" +numero +"</p>");
+        var origin = "Austin+TX".replace(/' '/g,'+');
+        
+
+        $('.table').append("<tr><td>" +childSnapshot.val().name_db +"</td><td>" +address +"</td><td>" +cell +"</td><td><p>"+Math.round(numero) +"mins.</p></td><td class='status'>open</td><td>" +notes +"</td></tr>")
+    });
+
+
     //login information shows if the user logs in or registers
     $('.loginInputs').hide();
 
@@ -75,6 +91,7 @@ function login() {
         }
     });
 }
+
 
 //registers you as user if you don't already have login
 function createUser(email, password) {

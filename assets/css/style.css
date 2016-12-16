@@ -7,9 +7,18 @@ body {
 }
 
 h1 {
+<<<<<<< HEAD
+	font-family: 'Rock Salt', cursive;
+	font-weight: bold;
+	font-size:40px;
+	margin: 20px 0;
+	text-align: left;
+	color: #b40101;
+=======
     font-weight: bold;
     margin: 30px 0;
     text-align: center;
+>>>>>>> 9346fcff9e8316347053bc0395dafe354383103d
 }
 
 p {

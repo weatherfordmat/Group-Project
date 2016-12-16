@@ -69,7 +69,7 @@ th {
 
 /* body area */
 .table {
-
+    margin-bottom: 250px;
 }
 tr:nth-child(odd) {
     background-color: white;

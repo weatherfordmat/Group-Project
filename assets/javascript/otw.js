@@ -49,7 +49,7 @@ $(document).ready(function() {
     setTimeout(readtable, 10000);
     function readtable() {
         $('.table').dataTable({
-                    
+                    "order": [[ 4, "desc" ]]
                 });
         //change the star to be filled or not
     }

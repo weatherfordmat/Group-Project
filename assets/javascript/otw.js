@@ -10,11 +10,10 @@ firebase.initializeApp(config);
 var database = firebase.database();
 var rootRef = database.ref();
 var options = {
-            enableHighAccuracy: true,
-            timeout: 8000,
-            maximumAge: 0
-        };
-
+    enableHighAccuracy: true,
+    timeout: 8000,
+    maximumAge: 0
+};
 $(document).ready(function() {
     rootRef.on("child_added", function(childSnapshot) {
         var name = childSnapshot.val().name_db;
@@ -22,12 +21,12 @@ $(document).ready(function() {
         var cell = childSnapshot.val().contactCell_db;
         var notes = childSnapshot.val().notes_db.length > 10 ? childSnapshot.val().notes_db.substring(0, 9) + "<button class='btn btn-link'>...more </button>" : childSnapshot.val().notes_db;
         var dest = address;
-
+        //get our current location: two options: success or failure;
         navigator.geolocation.getCurrentPosition(success, error, options);
         //if we don't know where we are, then append all data, leave data column empty;
         function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
-            $('.table').append("<tr><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
+            $('tbody').append("<tr><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
         };
         //if we know where we make a request to our node server;
         function success(pos) {
@@ -36,24 +35,24 @@ $(document).ready(function() {
             $.get({
                 url: geoURL
             }).done(function(response) {
-                $('.table').append("<tr><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary dur'>" + response.history.rows[0].elements[0].duration.text + "</button></td><td style='color: green'; class='status'>open</td><td>" + notes + "</td></tr>")
+                $('tbody').append("<tr><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary dur'>" + response.history.rows[0].elements[0].duration.text + "</button></td><td style='color: green'; class='status'>open</td><td>" +notes +"</td></tr>")
+                    //show lowest value time;
+                
             });
         }
-        //sorts by time;
-        var $table = $('.table');
-        var rows = $table.find('tr').get();
-        rows.sort(function(a, b) {
-            var keyA = $(a).attr('.dur');
-            var keyB = $(b).attr('.status');
-            if (keyA > keyB) return 1;
-            if (keyA < keyB) return -1;
-            return 0;
-        });
-        $.each(rows, function(index, row) {
-            $table.children('tbody').append(row);
-        });
+
     });
-    //change the star to be filled or not
+    //get the min and max duration;
+    $('.autoRoute').on('click', function() {
+            getMinimum();
+        })
+    setTimeout(readtable, 10000);
+    function readtable() {
+        $('.table').dataTable({
+                    
+                });
+        //change the star to be filled or not
+    }
     $('.table').on('click', '.glyphicon', function() {
             if ($(this).hasClass('glyphicon-star-empty')) {
                 $(this).removeClass('glyphicon-star-empty').addClass('glyphicon-star');
@@ -100,7 +99,21 @@ function sendText(from, to, text) {
         console.log(response);
     });
 };
-
+//gets the shortest and longest duration from your current location;
+function getMinimum() {
+    var values = $('tr > td:nth-child(5)').text().replace(/\mins/g, '').split(' ');
+    values.pop();
+    values = values.map(function(a) {
+        return parseInt(a, 10)
+    });
+    var answer = values.sort(function(a, b) {
+        return a > b
+    });
+    var min = Math.min.apply(null, answer);
+    var max = Math.max.apply(null, answer);
+    console.log("The Shortest Distance is: " + min);
+    console.log("The Longest Distance is: " + max);
+}
 //logins you if you already are a user
 function login() {
     $('.loginInputs').show();
@@ -115,7 +128,7 @@ function login() {
                 createUser(email, password); //Delete This Line Right Before The Final Presentation!
             });
             $('.panel').css('filter', 'blur(0px)');
-            $('.auth').html("username: " +email);
+            $('.auth').html("username: " + email);
             $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');
         }
     });
@@ -128,7 +141,7 @@ function createUser(email, password) {
             var errorMessage = error.message;
         });
         $('.panel').css('filter', 'blur(0px)');
-        $('.auth').html("username: " +email);
+        $('.auth').html("username: " + email);
         $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');
     } else {
         $('input').css('border', '2px solid red');

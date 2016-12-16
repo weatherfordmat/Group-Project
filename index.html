@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
     <head>
         <meta content="width=device-width, initial-scale=1" name="viewport">
             <title>
@@ -13,14 +11,17 @@
             </script>
             <script src="assets/javascript/otw.js">
             </script>
+            <script type="text/javascript" src="assets/javascript/datatablesorting.js"></script>
             <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
                 <link href="assets/css/reset.css" rel="stylesheet" type="text/css">
+                <link rel="stylesheet" href="assets/css/datatablesorting.css">
                     <link href="assets/css/style.css" rel="stylesheet" type="text/css">
                         <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
                         </link>
                     </link>
                 </link>
             </link>
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
         </meta>
     </head>
     <body>
@@ -78,13 +79,15 @@
                         Add Customer
                     </button>
                     <!-- The Modal -->
-                    <div class="modal" id="myModal" data-backdrop="true">
+                    <div class="modal" data-backdrop="true" id="myModal">
                         <!-- Modal content -->
                         <div class="modal-content">
                             <span class="close" data-dismiss="modal">
                                 x
                             </span>
-                            <h1>Eventually, we can put Joel's Form On This Modal</h1>
+                            <h1>
+                                Eventually, we can put Joel's Form On This Modal
+                            </h1>
                         </div>
                     </div>
                     <button class="btn btn-default autoRoute">
@@ -102,7 +105,7 @@
                         <table class="table table-hover " id="table">
                             <thead>
                                 <tr>
-                                <th>
+                                    <th>
                                         <!-- Dont delete this extra column used for stars -->
                                     </th>
                                     <th>
@@ -115,8 +118,7 @@
                                         Phone Number
                                     </th>
                                     <th>
-                                        Time To Arrival <br/>
-                                        <a style="font-size: 9px;" onclick="location.reload()"> Doesn't Seem Right: Click to Refresh </a>
+                                        Time To Arrival
                                     </th>
                                     <th>
                                         Status
@@ -140,5 +142,4 @@
             </nav>
         </div>
     </body>
-
 </html>

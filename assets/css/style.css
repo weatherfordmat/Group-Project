@@ -7,7 +7,7 @@ body {
 }
 
 h1 {
-
+    font-family: 'Open Sans', sans-serif;
     font-weight: bold;
     margin: 30px 0;
     text-align: center;
@@ -33,7 +33,7 @@ th {
 }
 
 .navbar {
-    background-color: #666666;
+    background-color: #333333;
     opacity: 0.7;
     
 }

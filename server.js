@@ -26,8 +26,8 @@ router.get('/', function(req, res) {
     });
 });
 
-router.route('/matrix').get(function(req, res) {
-	var query = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=AIzaSyBh46nqPEIeRGwU23qtQJD8d0pFpShCPCs"
+router.route('/matrix/:origin/:dest').get(function(req, res) {
+	var query = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" +req.params.origin +"&destinations=" +req.params.dest +"&key=AIzaSyBh46nqPEIeRGwU23qtQJD8d0pFpShCPCs"
     requestify.get(query).then(function(response) {
                     var data = (response.getBody());
                     res.json({
@@ -43,6 +43,6 @@ app.all('/*', function(req, res, next) {
 });
 app.use('/api', router);
 app.listen(port, function() {
- 
+ 	console.log("Started")
 });
 

@@ -93,6 +93,11 @@ tr:nth-child(even) {
 	font-size: 1.5em;
 	padding: 2%;
 }
+.input2 {
+    margin: 15%;
+    width: 140%;
+    padding: 4%;
+}
 .toolButtons {
 	margin: 1%;
 	padding: 10px;
@@ -154,6 +159,19 @@ tr:nth-child(even) {
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
+.modal2 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height:  100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
 /* Modal Content */
 .modal-content {
@@ -164,8 +182,12 @@ tr:nth-child(even) {
     width: 80%;
 }
 
+#map {
+    height: 400px;
+    width: 100%;
+}
 /* The Close Button */
-.close {
+.close, .close2 {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
@@ -173,7 +195,7 @@ tr:nth-child(even) {
 }
 
 .close:hover,
-.close:focus {
+.close:focus, .close2:hover, .close2:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;

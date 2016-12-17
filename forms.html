@@ -1,36 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Customer Data Entry</title>
-	<script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
-	<script
-	  src="https://code.jquery.com/jquery-3.1.1.js"
-	  integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-	  crossorigin="anonymous"></script>
-	  <script src="assets/javascript/forms.js"></script>
-	  <link href="assets/css/reset.css">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="assets/css/form.css">
-	
-	
-	<title>Customer Data Entry Form</title>
-</head>
-<body>
-<div class="container">
-<div class="row">
-<div class="col-md-12">
-<h3>Customer Data Entry Form</h3>
-<div class="input-group">
-<div ><input  class = "custName" placeholder="Customer Name"type="text"></div>
-<div ><input class = "notes" placeholder="Notes"type="text"></div>
-<div ><input class = "contactCell" placeholder="Phone Number (e.g.  xxx-xxx-xxxx)"type="text"></div>
-<div ><input placeholder="Enter Address"type="text" class = "custAddress"></div>
-</div>
-<button class="btn btn-success submit">Submit</button>
-</div>
-</div>
-
-</body>
+    <head>
+        <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1" name="viewport">
+                <title>
+                    Customer Data Entry
+                </title>
+                <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js">
+                </script>
+                <script crossorigin="anonymous" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" src="https://code.jquery.com/jquery-3.1.1.js">
+                </script>
+                <script src="assets/javascript/forms.js">
+                </script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/af.js"></script>
+                <link href="assets/css/reset.css">
+                    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+                        <title>
+                            Customer Data Entry Form
+                        </title>
+                    </link>
+                </link>
+            </meta>
+        </meta>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>
+                        Customer Data Entry Form
+                    </h3>
+                    <div class="input-group">
+                        <div>
+                            <input class="custName" placeholder="Customer Name" type="text"/>
+                        </div>
+                        <div>
+                            <input class="notes" placeholder="Notes" type="text"/>
+                        </div>
+                        <div>
+                            <input class="contactCell" placeholder="Phone Number (e.g.  xxx-xxx-xxxx)" type="text"/>
+                        </div>
+                        <div>
+                            <input class="custAddress" placeholder="Enter Address" type="text"/>
+                        </div>
+                    </div>
+                    <button class="btn btn-success submit">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

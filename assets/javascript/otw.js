@@ -21,12 +21,14 @@ $(document).ready(function() {
         var cell = childSnapshot.val().contactCell_db;
         var notes = childSnapshot.val().notes_db.length > 10 ? childSnapshot.val().notes_db.substring(0, 9) + "<button class='btn btn-link'>...more </button>" : childSnapshot.val().notes_db;
         var dest = address;
+        var lat = childSnapshot.val().lat;
+        var lng = childSnapshot.val().lng;
         //get our current location: two options: success or failure;
         navigator.geolocation.getCurrentPosition(success, error, options);
         //if we don't know where we are, then append all data, leave data column empty;
         function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
-            $('tbody').append("<tr><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
+            $('tbody').append("<tr data-lat=" +lat +" data-lng=" +lng +"><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
         };
         //if we know where we make a request to our node server;
         function success(pos) {
@@ -35,8 +37,18 @@ $(document).ready(function() {
             $.get({
                 url: geoURL
             }).done(function(response) {
-                $('tbody').append("<tr><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary dur'>" + response.history.rows[0].elements[0].duration.text + "</button></td><td style='color: green'; class='status'>open</td><td>" +notes +"</td></tr>")
+
+                if (response.history.rows[0].elements[0].duration.text.length > 7) {
+                    var total = (response.history.rows[0].elements[0].duration.text).replace(/\hour/g, '60').replace(/\D/g, ' ').trim().split(' ').map(function(a) {return parseInt(a,10)});
+                    var result = total.reduce(function(a, b) {return a + b});
+                }
+                else {
+                    var result = (response.history.rows[0].elements[0].duration.text).replace(/\D/g, ' ');
+                }
+
+                $('tbody').append("<tr ><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button data-lat=" +lat +" data-lng=" +lng +" class='btn btn-primary dur'>" + result + "</button></td><td style='color: green'; class='status'>open</td><td>" +notes +"</td></tr>")
                     //show lowest value time;
+
                 
             });
         }
@@ -51,8 +63,33 @@ $(document).ready(function() {
         $('.table').dataTable({
                     "order": [[ 4, "desc" ]]
                 });
+        $('.dur').append(' mins');
+        
+
+
+        getModal('.modal2', '.dur', '.close2');
+        
+        $('.dur').on('click',function() {
+            var that = this;
+            window.initMap = function initMap() {
+                            
+                var routeTo = {lat: Number($(that).attr('data-lat')), lng: Number($(that).attr('data-lng'))};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 13,
+                    center: routeTo
+                });
+                var market = new google.maps.Marker({
+                    position: routeTo,
+                    map: map,
+                });
+        
+            }
+            $('.modal2').append('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initMap">')
+            
+        })
         //change the star to be filled or not
     }
+
     $('.table').on('click', '.glyphicon', function() {
             if ($(this).hasClass('glyphicon-star-empty')) {
                 $(this).removeClass('glyphicon-star-empty').addClass('glyphicon-star');

@@ -28,16 +28,16 @@ $(document).ready(function() {
         //if we don't know where we are, then append all data, leave data column empty;
         function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
-            $('tbody').append("<tr data-lat=" + lat + " data-lng=" + lng + "><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
+            $('tbody').append("<tr data-lat=" + lat + " data-lng=" + lng + "><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td class=" +childSnapshot.val().notes_db +">" + notes + "</td></tr>")
         };
         //if we know where we make a request to our node server;
-        function success(pos) { 
+        function success(pos) {
             var origin = pos.coords;
             var geoURL = "https://delivernow.herokuapp.com/api/matrix/" + origin.latitude + "," + origin.longitude + "/" + dest;
             $.get({
                 url: geoURL
             }).done(function(response) {
-                 var numberRecords = childSnapshot.numChildren();
+                var numberRecords = childSnapshot.numChildren();
                 if (response.history.rows[0].elements[0].duration.text.length > 7) {
                     var total = (response.history.rows[0].elements[0].duration.text).replace(/\hour/g, '60').replace(/\D/g, ' ').trim().split(' ').map(function(a) {
                         return parseInt(a, 10)
@@ -50,18 +50,13 @@ $(document).ready(function() {
                 }
                 $('tbody').append("<tr class='eachRow'><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td class='companyName'>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button data-lat=" + lat + " data-lng=" + lng + " class='btn btn-primary dur'>" + result + "</button></td><td style='color: green'; class='status'>open</td><td>" + notes + "</td></tr>")
                     //show lowest value time;
-                    if ($('.table tr').length === numberRecords) {
-                        readtable();
-                    }
-
-
+                if ($('.table tr').length === numberRecords) {
+                    readtable();
+                }
             });
-
         }
-        
     });
-    
-    $('.table').on('click', '.eachRow', function() {  
+    $('.table').on('click', '.eachRow', function() {
         $('#companyName').html($(this).find('td:eq(1)').text())
         $('#addressPopup').html($(this).find('td:eq(2)').text());
         $('#numPopup').html($(this).find('td:eq(3)').text());
@@ -72,7 +67,6 @@ $(document).ready(function() {
     $('.autoRoute').on('click', function() {
         getMinimum();
     })
-    
 
     function readtable() {
         $('.table').dataTable({
@@ -116,7 +110,6 @@ $(document).ready(function() {
     //login a user that already exists: N. B. Passwords must be longer than six characters!
     $('#login').on('click', function() {
         login();
-
     });
     //registering uses the same mechanisms;
     $('.subButton').click(function() {
@@ -152,6 +145,11 @@ function sendText(from, to, text) {
 //gets the shortest and longest duration from your current location;
 function getMinimum() {
     var values = $('tr > td:nth-child(5)').text().replace(/\mins/g, '').split(' ');
+    values = values.filter(function(a) {
+        if (a !== "") {
+            return a
+        }
+    })
     values.pop();
     values = values.map(function(a) {
         return parseInt(a, 10)
@@ -161,6 +159,12 @@ function getMinimum() {
     });
     var min = Math.min.apply(null, answer);
     var max = Math.max.apply(null, answer);
+
+    var search = min;  
+    $(".table tr td").filter(function() {
+        return $(this).text().substring(0,2) == search;
+    }).parent('tr:eq(0)').css('background-color','#FFFF00');
+
     console.log("The Shortest Distance is: " + min);
     console.log("The Longest Distance is: " + max);
 }
@@ -169,7 +173,6 @@ function login() {
     $('.loginInputs').show();
     $('.login').on('click', function() {
         email = $('#email').val().trim();
-
         password = $('#password').val().trim();
         if (email !== '' && password !== '') {
             firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
@@ -178,7 +181,6 @@ function login() {
                 console.log("Looks Like We'll Create A User for You!");
                 createUser(email, password); //Delete This Line Right Before The Final Presentation!
             });
-
             $('.panel').css('filter', 'blur(0px)');
             $('.auth').html("username: " + email);
             $('.auth').css('color', 'white').css('font-size', '1em').css('font-style', 'italic');

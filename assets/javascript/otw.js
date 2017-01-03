@@ -28,7 +28,7 @@ $(document).ready(function() {
         //if we don't know where we are, then append all data, leave data column empty;
         function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
-            $('tbody').append("<tr data-lat=" +lat +" data-lng=" +lng +"><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
+            $('tbody').append("<tr data-lat=" + lat + " data-lng=" + lng + "><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
         };
         //if we know where we make a request to our node server;
         function success(pos) {
@@ -37,59 +37,62 @@ $(document).ready(function() {
             $.get({
                 url: geoURL
             }).done(function(response) {
-
                 if (response.history.rows[0].elements[0].duration.text.length > 7) {
-                    var total = (response.history.rows[0].elements[0].duration.text).replace(/\hour/g, '60').replace(/\D/g, ' ').trim().split(' ').map(function(a) {return parseInt(a,10)});
-                    var result = total.reduce(function(a, b) {return a + b});
-                }
-                else {
+                    var total = (response.history.rows[0].elements[0].duration.text).replace(/\hour/g, '60').replace(/\D/g, ' ').trim().split(' ').map(function(a) {
+                        return parseInt(a, 10)
+                    });
+                    var result = total.reduce(function(a, b) {
+                        return a + b
+                    });
+                } else {
                     var result = (response.history.rows[0].elements[0].duration.text).replace(/\D/g, ' ');
                 }
-
-                $('tbody').append("<tr ><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button data-lat=" +lat +" data-lng=" +lng +" class='btn btn-primary dur'>" + result + "</button></td><td style='color: green'; class='status'>open</td><td>" +notes +"</td></tr>")
+                $('tbody').append("<tr class='eachRow'><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td class='companyName'>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button data-lat=" + lat + " data-lng=" + lng + " class='btn btn-primary dur'>" + result + "</button></td><td style='color: green'; class='status'>open</td><td>" + notes + "</td></tr>")
                     //show lowest value time;
-
-                
             });
         }
-
+    });
+    $('.table').on('click', '.eachRow', function() {  
+        $('#companyName').html($(this).find('td:eq(1)').text())
+        $('#addressPopup').html($(this).find('td:eq(2)').text());
+        $('#numPopup').html($(this).find('td:eq(3)').text());
+        $('#timeToArrival').html($(this).find('td:eq(4)').text() + " away");
+        $('#notesPopup').html($(this).find('td:eq(6)').text);
     });
     //get the min and max duration;
     $('.autoRoute').on('click', function() {
-            getMinimum();
-        })
+        getMinimum();
+    })
     setTimeout(readtable, 10000);
+
     function readtable() {
         $('.table').dataTable({
-                    "order": [[ 4, "desc" ]]
-                });
+            "order": [
+                [4, "desc"]
+            ]
+        });
         $('.dur').append(' mins');
-        
-
-
         getModal('.modal2', '.dur', '.close2');
-        
-        $('.dur').on('click',function() {
-            var that = this;
-            window.initMap = function initMap() {
-                            
-                var routeTo = {lat: Number($(that).attr('data-lat')), lng: Number($(that).attr('data-lng'))};
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 13,
-                    center: routeTo
-                });
-                var market = new google.maps.Marker({
-                    position: routeTo,
-                    map: map,
-                });
-        
-            }
-            $('.modal2').append('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initMap">')
-            
-        })
-        //change the star to be filled or not
+        $('.dur').on('click', function() {
+                var that = this;
+                window.initMap = function initMap() {
+                    var routeTo = {
+                        lat: Number($(that).attr('data-lat')),
+                        lng: Number($(that).attr('data-lng'))
+                    };
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 13,
+                        center: routeTo
+                    });
+                    var market = new google.maps.Marker({
+                        position: routeTo,
+                        map: map,
+                    });
+                }
+                $('.modal2').append('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initMap">')
+            })
+            //change the star to be filled or not
     }
-
     $('.table').on('click', '.glyphicon', function() {
             if ($(this).hasClass('glyphicon-star-empty')) {
                 $(this).removeClass('glyphicon-star-empty').addClass('glyphicon-star');

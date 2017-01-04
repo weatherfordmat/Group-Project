@@ -28,7 +28,7 @@ $(document).ready(function() {
         //if we don't know where we are, then append all data, leave data column empty;
         function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
-            $('tbody').append("<tr data-lat=" + lat + " data-lng=" + lng + "><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td class=" +childSnapshot.val().notes_db +">" + notes + "</td></tr>")
+            $('tbody').append("<tr data-lat=" + lat + " data-lng=" + lng + "><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td class=" + childSnapshot.val().notes_db + ">" + notes + "</td></tr>")
         };
         //if we know where we make a request to our node server;
         function success(pos) {
@@ -56,13 +56,6 @@ $(document).ready(function() {
             });
         }
     });
-    $('.table').on('click', '.eachRow', function() {
-        $('#companyName').html($(this).find('td:eq(1)').text())
-        $('#addressPopup').html($(this).find('td:eq(2)').text());
-        $('#numPopup').html($(this).find('td:eq(3)').text());
-        $('#timeToArrival').html($(this).find('td:eq(4)').text() + " away");
-        $('#notesPopup').html($(this).find('td:eq(6)').text);
-    });
     //get the min and max duration;
     $('.autoRoute').on('click', function() {
         getMinimum();
@@ -78,6 +71,13 @@ $(document).ready(function() {
         getModal('.modal2', '.dur', '.close2');
         $('.dur').on('click', function() {
                 var that = this;
+                $('.table').on('click', '.eachRow', function() {
+                    $('#companyName').html($(this).find('td:eq(1)').text())
+                    $('#addressPopup').html($(this).find('td:eq(2)').text());
+                    $('#numPopup').html($(this).find('td:eq(3)').text());
+                    $('#timeToArrival').html($(this).find('td:eq(4)').text() + " away");
+                    $('#notesPopup').text($(this).find('td:eq(6)').text());
+                });
                 window.initMap = function initMap() {
                     var routeTo = {
                         lat: Number($(that).attr('data-lat')),
@@ -159,12 +159,10 @@ function getMinimum() {
     });
     var min = Math.min.apply(null, answer);
     var max = Math.max.apply(null, answer);
-
-    var search = min;  
+    var search = min;
     $(".table tr td").filter(function() {
-        return $(this).text().substring(0,2) == search;
-    }).parent('tr:eq(0)').css('background-color','#FFFF00');
-
+        return $(this).text().substring(0, 2) == search;
+    }).parent('tr').eq(0).css('background-color', '#FFFF00');
     console.log("The Shortest Distance is: " + min);
     console.log("The Longest Distance is: " + max);
 }

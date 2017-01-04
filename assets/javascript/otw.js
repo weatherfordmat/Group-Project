@@ -19,7 +19,7 @@ $(document).ready(function() {
         var name = childSnapshot.val().name_db;
         var address = childSnapshot.val().address_db;
         var cell = childSnapshot.val().contactCell_db;
-        var notes = childSnapshot.val().notes_db.length > 10 ? childSnapshot.val().notes_db.substring(0, 9) + "<button class='btn btn-link'>...more </button>" : childSnapshot.val().notes_db;
+        var notes = childSnapshot.val().notes_db.length > 10 ? childSnapshot.val().notes_db.substring(0, 9) + "<button class='btn btn-link more'>...more </button>" : childSnapshot.val().notes_db;
         var dest = address;
         var lat = childSnapshot.val().lat;
         var lng = childSnapshot.val().lng;
@@ -28,7 +28,7 @@ $(document).ready(function() {
         //if we don't know where we are, then append all data, leave data column empty;
         function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
-            $('tbody').append("<tr data-lat=" + lat + " data-lng=" + lng + "><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td class=" + childSnapshot.val().notes_db + ">" + notes + "</td></tr>")
+            $('tbody').append("<tr data-lat=" + lat + " data-lng=" + lng + "><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td><td>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button class='btn btn-primary'> Not Avail.</button></td><td class='status'>open</td><td>" + notes + "</td></tr>")
         };
         //if we know where we make a request to our node server;
         function success(pos) {
@@ -48,7 +48,7 @@ $(document).ready(function() {
                 } else {
                     var result = (response.history.rows[0].elements[0].duration.text).replace(/\D/g, ' ');
                 }
-                $('tbody').append("<tr class='eachRow'><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td class='companyName'>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button data-lat=" + lat + " data-lng=" + lng + " class='btn btn-primary dur'>" + result + "</button></td><td style='color: green'; class='status'>open</td><td>" + notes + "</td></tr>")
+                $('tbody').append("<tr class='eachRow'><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td class='companyName'>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button data-lat=" + lat + " data-lng=" + lng + " class='btn btn-primary dur'>" + result + "</button></td><td style='color: green'; class='status'>open</td><td data-notes='" +childSnapshot.val().notes_db +"'>" + notes + "</td></tr>")
                     //show lowest value time;
                 if ($('.table tr').length === numberRecords) {
                     readtable();
@@ -67,10 +67,17 @@ $(document).ready(function() {
                 [4, "desc"]
             ]
         });
-        $('.dur').append(' mins');
-        getModal('.modal2', '.dur', '.close2');
-        var clickedYet = false;
 
+        //show the entire note if its larger than 10 characters;
+        //Should there be a way to reverse it?
+        $('.table').on('click','.more', function() {
+            $(this).parent().html($(this).parent().attr('data-notes'))
+        });
+
+        //click on a specific company to route to. . .
+        var clickedYet = false;
+        getModal('.modal2', '.dur', '.close2');
+        $('.dur').append(' mins');
         $('.dur').on('click', function() {
                 
                 var that = this;
@@ -125,7 +132,7 @@ $(document).ready(function() {
     $('.subButton').click(function() {
             login();
         })
-        //show map view & hide list view;
+    //show map view & hide list view;
     $('#toggleMap').on('click', function() {
         $('.panel').animate({
             left: "+=100",

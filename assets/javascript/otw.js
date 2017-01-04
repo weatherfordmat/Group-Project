@@ -69,7 +69,10 @@ $(document).ready(function() {
         });
         $('.dur').append(' mins');
         getModal('.modal2', '.dur', '.close2');
+        var clickedYet = false;
+
         $('.dur').on('click', function() {
+                
                 var that = this;
                 $('.table').on('click', '.eachRow', function() {
                     $('#companyName').html($(this).find('td:eq(1)').text())
@@ -79,12 +82,13 @@ $(document).ready(function() {
                     $('#notesPopup').text($(this).find('td:eq(6)').text());
                 });
                 window.initMap = function initMap() {
+                  
                     var routeTo = {
                         lat: Number($(that).attr('data-lat')),
                         lng: Number($(that).attr('data-lng'))
                     };
                     var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 13,
+                        zoom: 15,
                         center: routeTo
                     });
                     var market = new google.maps.Marker({
@@ -92,7 +96,14 @@ $(document).ready(function() {
                         map: map,
                     });
                 }
-                $('.modal2').append('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initMap">')
+                if (!clickedYet) {
+                    clickedYet = true;
+                    $('.script2').html('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initMap">')
+                }
+                else {
+                    initMap();
+                }
+                
             })
             //change the star to be filled or not
     }

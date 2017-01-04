@@ -102,9 +102,8 @@ $(document).ready(function() {
                 }
                 else {
                     initMap();
-                }
-                
-            })
+                }          
+            });
             //change the star to be filled or not
     }
     $('.table').on('click', '.glyphicon', function() {

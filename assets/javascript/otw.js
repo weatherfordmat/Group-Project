@@ -14,6 +14,7 @@ var options = {
     timeout: 8000,
     maximumAge: 0
 };
+var clickedYet = false;
 $(document).ready(function() {
     rootRef.on("child_added", function(childSnapshot) {
         var name = childSnapshot.val().name_db;
@@ -59,8 +60,9 @@ $(document).ready(function() {
     //get the min and max duration;
     $('.autoRoute').on('click', function() {
         getMinimum();
-    })
+    });
 
+    //turn into a datatable (smallish library)
     function readtable() {
         $('.table').dataTable({
             "order": [
@@ -73,7 +75,7 @@ $(document).ready(function() {
             $(this).parent().html($(this).parent().attr('data-notes'))
         });
         //click on a specific company to route to. . .
-        var clickedYet = false;
+        
         getModal('.modal2', '.dur', '.close2');
         $('.dur').append(' mins');
         $('.dur').on('click', function() {
@@ -99,7 +101,7 @@ $(document).ready(function() {
                     map: map,
                 });
             }
-            if (!clickedYet) {
+            if (!clickedYet && !clickedOnce) {
                 clickedYet = true;
                 $('.script2').html('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initMap">')
             } else {
@@ -130,25 +132,36 @@ $(document).ready(function() {
         //show map view & hide list view;
     $('#toggleList').on('click', function() {
         $('.panel-body').show();
-        
+        $('.autoRoute').show();
         $('#map_wrapper').animate({
             left: "+=100",
             height: "toggle"
         }, 500);
     });
     //show list view and hide map view;
+    clickedOnce = false;
     $('#toggleMap').on('click', function() {
+        $('.autoRoute').hide();
         $('.panel-body').hide();
         $('#map_wrapper').animate({
             left: "+=100",
             height: "toggle"
         }, 500);
         $('.panel').append('<div id="map_wrapper"><div id="map_canvas" class="mapping"></div></div>')
-        var script = document.createElement('script');
-        script.src = "https://maps.googleapis.com/maps/api/js?sensor=false&callback=initialize";
-        document.body.appendChild(script);
+        if (!clickedOnce) {
+            clickedOnce = true;
+            var script = document.createElement('script');
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initialize";
+            document.body.appendChild(script);
+        }
     });
     getModal('#myModal', '.addCustomer', '.close');
+
+    //send text
+    $('#textYourArrival').click(function() {
+        //sendText('12017016880', '12817430153', 'It works!');
+        alert("TextSent!")
+    })
 });
 //FUNCTIONS TO CALL WITHIN DOCUMENT.READY
 /* Warning, each text is 0.0065 cents. Add +1 for US numbers. Use with caution.
@@ -253,9 +266,8 @@ function initialize() {
                 [childSnapshot.val().name_db, childSnapshot.val().lat, childSnapshot.val().lng]
             ];
             descript = [
-                ['<div class="info_content"><h2><strong>' +childSnapshot.val().name_db + '</strong></h2><ul><em><li>Address: ' +childSnapshot.val().address_db +'</li></em><li>Notes: ' +childSnapshot.val().notes_db +'</li></ul></div>']
+                ['<div class="info_content"><h2><strong>' + childSnapshot.val().name_db + '</strong></h2><ul><em><li>Address: ' + childSnapshot.val().address_db + '</li></em><li>Notes: ' + childSnapshot.val().notes_db + '</li></ul></div>']
             ];
-            
             var markers = total;
             // Info Window Content
             var infoWindowContent = descript;

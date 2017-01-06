@@ -226,12 +226,12 @@ tr:nth-child(even) {
 
 #map_wrapper {
     height: 675px;
-    margin-bottom: 115px;
+    margin-bottom: 155px;
 }
 
 #map_canvas {
     width: 110%;
-    height: 110%;
+    height: 100%;
 }
 .info_content {
     font-size: 1.2em;
@@ -256,6 +256,16 @@ tr:nth-child(even) {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+#weather, #description, #temp {
+    float: right;
+    color: #808080;
+    font-style: italic;
+    font-size: 1em;
+}
+#weather {
+    font-style: normal;
+    color: black;
 }
 
 /* responsive design */

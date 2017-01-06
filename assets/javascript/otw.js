@@ -14,7 +14,6 @@ var options = {
     timeout: 10000,
     maximumAge: 0
 };
-var clickedYet = false;
 $(document).ready(function() {
     rootRef.on("child_added", function(childSnapshot) {
         var name = childSnapshot.val().name_db;
@@ -24,7 +23,6 @@ $(document).ready(function() {
         var dest = address;
         var lat = childSnapshot.val().lat;
         var lng = childSnapshot.val().lng;
-
         //get our current location: two options: success or failure;
         navigator.geolocation.getCurrentPosition(success, error, options);
         //if we don't know where we are, then append all data, leave data column empty;
@@ -34,15 +32,12 @@ $(document).ready(function() {
         };
         //if we know where we make a request to our node server;
         function success(pos) {
-
             var origin = pos.coords;
             var geoURL = "https://delivernow.herokuapp.com/api/matrix/" + origin.latitude + "," + origin.longitude + "/" + dest;
-            
             $.get({
                 url: geoURL
             }).done(function(response) {
                 var numberRecords = childSnapshot.numChildren();
-
                 if (response.history.rows[0].elements[0].duration.text.length > 7) {
                     var total = (response.history.rows[0].elements[0].duration.text).replace(/\hour/g, '60').replace(/\D/g, ' ').trim().split(' ').map(function(a) {
                         return parseInt(a, 10)
@@ -144,8 +139,11 @@ $(document).ready(function() {
             left: "+=100",
             height: "toggle"
         }, 500);
-        $('.panel').append('<div id="map_wrapper"><div id="map_canvas" class="mapping"></div></div>')
-        initialize();
+        if (!clickedOnce) {
+            clickedOnce = true;
+            $('.panel').append('<div id="map_wrapper"><div id="sidebar"> </div><div id="map_canvas" class="mapping"></div></div>')
+            initialize();
+        }
     });
     getModal('#myModal', '.addCustomer', '.close');
     //send text
@@ -233,17 +231,22 @@ function getModal(modal, buttonOpen, buttonClose) {
         modal.css('display', 'none');
     });
 }
-
+//the multi-pin function for the mapview
 function initialize() {
     var map;
     var bounds = new google.maps.LatLngBounds();
     var mapOptions = {
         mapTypeId: 'roadmap'
     };
+    var directionsService = new google.maps.DirectionsService;
     // Display a map on the page
     map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     map.setTilt(45);
     // Multiple Markers
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+        map: map
+    });
+    var stepDisplay = new google.maps.InfoWindow;
     rootRef.on("value", function(childSnapshot) {
         var name = childSnapshot.val().name_db;
         var address = childSnapshot.val().address_db;
@@ -257,8 +260,18 @@ function initialize() {
                 [childSnapshot.val().name_db, childSnapshot.val().lat, childSnapshot.val().lng]
             ];
             descript = [
-                ['<div class="info_content"><h2><strong>' + childSnapshot.val().name_db + '</strong></h2><ul><em><li>Address: ' + childSnapshot.val().address_db + '</li></em><li>Notes: ' + childSnapshot.val().notes_db + '</li></ul></div>']
+                ['<div class="info_content"><h2><strong>' + childSnapshot.val().name_db + '</strong></h2><br><ul><em><li>Address: ' + childSnapshot.val().address_db + '</li></em><li>' +childSnapshot.val().contactCell_db +'</li><li>Notes: ' + childSnapshot.val().notes_db + '</li><li><br><button class="btn btn-success eta">Text Your ETA</button></li></ul></div>']
             ];
+
+            $('#map_wrapper').on('click', '.eta', function() {
+            	/*
+            	var sendTo = $(this).attr('data-phone').
+				sendText('12017016880', "1" +sendTo, 'We are on our way to resupply you! Our estimated time of delivery is:' +eta);
+            	*/
+            	$(this).parent().parent().html("Thank you! The Text Has Been Sent Successfully!")
+            })
+
+            $('#sidebar').append("<h2>" + childSnapshot.val().name_db + "</h2><br><p>" + childSnapshot.val().address_db + "</p><br><hr>")
             var markers = total;
             // Info Window Content
             var infoWindowContent = descript;
@@ -289,8 +302,10 @@ function initialize() {
                 this.setZoom(12);
                 google.maps.event.removeListener(boundsListener);
             });
+            //show traffic
             var trafficLayer = new google.maps.TrafficLayer();
             trafficLayer.setMap(map);
+            //show our location
             var GeoMarker = new GeolocationMarker(map);
         });
     });

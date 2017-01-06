@@ -227,19 +227,45 @@ tr:nth-child(even) {
 #map_wrapper {
     height: 675px;
     margin-bottom: 155px;
+    width: 110%;
+}
+#sidebar {
+    background-color: white;
+    width: 200px;
+    padding: 3%;
+    height: 100%;
+    float: left;
+    border: 2px solid #999999;
+    overflow: scroll;
+    border-radius: 10px;
+    text-align: center;
+    margin-right: 25px;
+    color: black;
+}
+#sidebar h2 {
+    font-weight: 600;
+
+}
+#sidebar p {
+    font-style: italic; 
+    font-weight: 200;  
 }
 
 #map_canvas {
-    width: 110%;
+    width: 80%;
     height: 100%;
 }
 .info_content {
     font-size: 1.2em;
+    text-align: center;
+    border-radius: 10px;
 
 }
 .info_content h2 {
-    font-size: 2.2em;
-    font-weight: 400;
+    font-size: 2em;
+    font-weight: 300;
+    color: #008080;
+    font-family: 'Open Sans', sans-serif;
     
 }
 

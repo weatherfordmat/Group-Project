@@ -11,7 +11,7 @@ var database = firebase.database();
 var rootRef = database.ref();
 var options = {
     enableHighAccuracy: true,
-    timeout: 8000,
+    timeout: 10000,
     maximumAge: 0
 };
 var clickedYet = false;
@@ -24,6 +24,7 @@ $(document).ready(function() {
         var dest = address;
         var lat = childSnapshot.val().lat;
         var lng = childSnapshot.val().lng;
+
         //get our current location: two options: success or failure;
         navigator.geolocation.getCurrentPosition(success, error, options);
         //if we don't know where we are, then append all data, leave data column empty;
@@ -33,12 +34,15 @@ $(document).ready(function() {
         };
         //if we know where we make a request to our node server;
         function success(pos) {
+
             var origin = pos.coords;
             var geoURL = "https://delivernow.herokuapp.com/api/matrix/" + origin.latitude + "," + origin.longitude + "/" + dest;
+            
             $.get({
                 url: geoURL
             }).done(function(response) {
                 var numberRecords = childSnapshot.numChildren();
+
                 if (response.history.rows[0].elements[0].duration.text.length > 7) {
                     var total = (response.history.rows[0].elements[0].duration.text).replace(/\hour/g, '60').replace(/\D/g, ' ').trim().split(' ').map(function(a) {
                         return parseInt(a, 10)
@@ -99,7 +103,7 @@ $(document).ready(function() {
                     map: map,
                 });
             }
-           initMap();
+            initMap();
         });
         //change the star to be filled or not
     }
@@ -141,7 +145,7 @@ $(document).ready(function() {
             height: "toggle"
         }, 500);
         $('.panel').append('<div id="map_wrapper"><div id="map_canvas" class="mapping"></div></div>')
-       initialize();
+        initialize();
     });
     getModal('#myModal', '.addCustomer', '.close');
     //send text

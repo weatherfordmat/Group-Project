@@ -51,8 +51,8 @@ $(document).ready(function() {
                 }
                 $('tbody').append("<tr class='eachRow'><td><span style='color: gold' class='glyphicon glyphicon-star-empty' aria-hidden='true'></td></span><td class='companyName'>" + childSnapshot.val().name_db + "</td><td>" + address + "</td><td>" + cell + "</td><td><button data-lat=" + lat + " data-lng=" + lng + " class='btn btn-primary dur'>" + result + "</button></td><td style='color: green'; class='status'>open</td><td data-notes='" + childSnapshot.val().notes_db + "'>" + notes + "</td></tr>")
                     //show lowest value time;
-                if ($('.table tr').length === numberRecords) {
-                    readtable();
+                if ($('.table tr').length == childSnapshot.numChildren()) {
+                    setTimeout(readtable, 500); //for some reason this if statement runs before the rows are appended fully.
                 }
             });
         }
@@ -61,7 +61,6 @@ $(document).ready(function() {
     $('.autoRoute').on('click', function() {
         getMinimum();
     });
-
     //turn into a datatable (smallish library)
     function readtable() {
         $('.table').dataTable({
@@ -75,7 +74,6 @@ $(document).ready(function() {
             $(this).parent().html($(this).parent().attr('data-notes'))
         });
         //click on a specific company to route to. . .
-        
         getModal('.modal2', '.dur', '.close2');
         $('.dur').append(' mins');
         $('.dur').on('click', function() {
@@ -101,12 +99,7 @@ $(document).ready(function() {
                     map: map,
                 });
             }
-            if (!clickedYet && !clickedOnce) {
-                clickedYet = true;
-                $('.script2').html('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initMap">')
-            } else {
-                initMap();
-            }
+           initMap();
         });
         //change the star to be filled or not
     }
@@ -148,15 +141,9 @@ $(document).ready(function() {
             height: "toggle"
         }, 500);
         $('.panel').append('<div id="map_wrapper"><div id="map_canvas" class="mapping"></div></div>')
-        if (!clickedOnce) {
-            clickedOnce = true;
-            var script = document.createElement('script');
-            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBytQb1gFbAwEOvaDH-PJmh2lds7q2a8CM&callback=initialize";
-            document.body.appendChild(script);
-        }
+       initialize();
     });
     getModal('#myModal', '.addCustomer', '.close');
-
     //send text
     $('#textYourArrival').click(function() {
         //sendText('12017016880', '12817430153', 'It works!');
@@ -298,6 +285,9 @@ function initialize() {
                 this.setZoom(12);
                 google.maps.event.removeListener(boundsListener);
             });
+            var trafficLayer = new google.maps.TrafficLayer();
+            trafficLayer.setMap(map);
+            var GeoMarker = new GeolocationMarker(map);
         });
     });
 }

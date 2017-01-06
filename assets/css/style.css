@@ -26,31 +26,55 @@ th {
 }
 
 /* header area */
-.mainTitle {
-    float: left;
-    color: white;
-    font-size: 38px;
-}
-
 .navbar {
-    background-color: #333333;
-    opacity: 0.7;
-    
+    background-color: #2AA1DA;
+    border-radius: 0;
+    height: auto;
+    padding: 8px 0;   
+}
+.navbar-header img {
+    float: left;
+    padding: 0 5px 0 0;
+    margin: 3px 0 0 0;
 }
 .navbar-top {
 
+}
+.navbar-default {
+    border: none;
+}
+.navbar-brand {
+    float: left;
+    font-size: 18px;
+    height: 50px;
+    line-height: 20px;
+    padding: 0;    
+}
+.mainTitle {
+    color: #f1f1f1;
+    float: left;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 40px;
+    margin: 10px 0 0 0;
+    padding: 0;
+    text-shadow: -3px 3px #36419A;
 }
 .subButton {
 	color: white;
 	font-size: 12px;
 }
 .autoRoute, .addCustomer {
-    background-color: #006699;
+    background-color: #36419A;
     color: white;
     border: 0;
 	margin: 1%;
  	padding: 10px;
     font-weight: 600;
+    width: 180px;
+}
+button.autoRoute:hover, button.addCustomer:hover {
+    background-color: #2AA1DA;
+    color: white;
 }
 .credits {
 	text-align: center;
@@ -85,8 +109,8 @@ tr:nth-child(even) {
 }
 /*tool bar area */
 .toolbar {
-	border-bottom: 2px solid #4C4C4C;
-	width: 150%;
+	border-bottom: 1px solid #ccc;
+	width: 100%;
 }
 .glyphicon {
 	margin: 2%;
